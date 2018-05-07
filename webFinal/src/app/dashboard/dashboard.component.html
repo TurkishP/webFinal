@@ -1,0 +1,41 @@
+<h3>Top Heroes</h3>
+
+<div class="container">
+  <mat-form-field>
+    <input matInput placeholder="Hero Name" #heroName>
+  </mat-form-field>
+  <!-- <mat-error *ngIf="heroNameFormControl.hasError('Hero Name') && !emailFormControl.hasError('required')">
+    Please enter a valid email address
+  </mat-error> -->
+  <mat-form-field>
+    <input matInput placeholder="img" #heroimg>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="subtitle" #subtitle>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="content" #content>
+  </mat-form-field>
+</div>
+<button mat-raised-button class="addHero" (click)="add(heroName.value,heroimg.value,subtitle.value,content.value )">ADD HERO</button>
+
+<div class="module-hero" fxLayout="row" fxLayout.xs="column" >
+  <div *ngFor="let hero of heroes" class="col" fxFlex="23" fxFlex.xs="100">
+    <mat-card >
+        <img mat-card-image src="{{hero.img}}">
+        <!-- <div mat-card-avatar class="header-image"></div> -->
+         <!-- <mat-card-title>{{hero.id}}</mat-card-title> erase later -->
+        <mat-card-title>{{hero.name}}</mat-card-title>
+        <mat-card-subtitle>{{hero.subtitle}}</mat-card-subtitle>
+        <mat-card-content>{{hero.content}}</mat-card-content>
+        <mat-card-actions>
+          <button routerLink="/detail/{{hero.id}}" mat-button>EDIT</button>
+          <button mat-button (click)="delete(hero)">DELETE</button>
+        </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
+
+<span>
+    <app-hero-search></app-hero-search>
+</span>

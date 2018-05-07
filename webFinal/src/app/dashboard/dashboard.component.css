@@ -1,0 +1,41 @@
+/* DashboardComponent's private CSS styles */
+
+
+  h3 {
+    text-align: left; margin-bottom: 10px;
+  }
+  h4 {
+    position: relative;
+  }
+
+
+  mat-card-content{
+    height: 50px;
+  }
+/* 
+  mat-card{
+    width: 300px;
+  } */
+
+.addHero {
+    margin-bottom: 10px;
+  }
+
+  input{
+    height: 35px;
+  }
+
+  .module-hero{
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .module-hero > div {
+    width: 300px;
+    margin: 5px;
+  }
+  
+  .header-image {
+    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover;
+  }
