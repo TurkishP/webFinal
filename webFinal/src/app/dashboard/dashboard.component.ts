@@ -5,12 +5,15 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import {ErrorStateMatcher} from '@angular/material/core';
 import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: [ './dashboard.component.css' ]
 })
+
 export class DashboardComponent implements OnInit {
 
   // isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -24,32 +27,39 @@ export class DashboardComponent implements OnInit {
   // ]);
 
   
-  heroes: Hero[] = [];
+  heroes: Observable<Hero[]>;
   hero: Hero;
-  id: number;
+  heroCount: Observable<number>;
   constructor(public heroService: HeroService,
     private route: ActivatedRoute,
     private location: Location) { }
 
   ngOnInit() {
     this.getHeroes();
+    
+    // console.log();
   }
 
   getHeroes(): void {
-    this.heroService.getHeroes()
-      .subscribe(heroes => this.heroes = heroes);
-    this.heroService.getHeroesFromFirebase();
-
+    // this.heroService.getHeroes()
+    //   .subscribe(heroes => this.heroes = heroes);
+    this.heroes = this.heroService.getHeroesFromFirebase()
+    console.log(this.heroes);
+    this.heroCount = this.heroService.getHeroCountFromFirebase()
+    // this.heroes.subscribe(result => {console.log(result.length())});
+    // .subscribe();
+      
   }
 
   
   delete(hero: Hero): void {
-    this.heroes = this.heroes.filter(h => h !== hero);
-    this.heroService.deleteHero(hero).subscribe();
+    // this.heroes = this.heroes.filter(h => h !== hero);
+    // this.heroService.deleteHeroFromFirebase(hero.name);
   }
 
-  add(name: string, img: string, subtitle: string, content: string): void {
-    let id = this.heroes[this.heroes.length-1].id+1;
+  add(name: string, img: string, subtitle: string, content: string, count: number): void {
+    
+    let id = this.heroes[count-1].id+1
     let defaultImg = "https://material.angular.io/assets/img/examples/shiba2.jpg";
     if(img.length == 0){
       img = defaultImg;
@@ -62,9 +72,9 @@ export class DashboardComponent implements OnInit {
       content : content,
       img: img
     };
-    this.heroService.addUserToFirebase(hero);
+    this.heroService.addHeroToFirebase(hero);
     // console.log(this.heroes.length);
-    this.heroes.push(hero);
+    // this.heroes.push(hero);
     this.heroService.addHero(hero)
     .subscribe(data =>{
       console.log(data)

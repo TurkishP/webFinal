@@ -19,27 +19,17 @@ import { MessagesComponent }    from './messages/messages.component';
 import { MaterialModule } from './material.module';
 import { LoginComponent } from './login/login.component';
 
-// import { AddHeroComponent } from './add-hero/add-hero.component';
+
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-// import { ToastNotificationComponent } from './toast-notification/toast-notification.component';
 
+//Firebase
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
-// export const firebase = environment.firebase;
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
-
-var firebaseConfig: {
-  apiKey: "AIzaSyDfvfrCuPfxn2FkkwbWJrO-azqXq0rrlrc",
-  authDomain: "webfinal-8f09e.firebaseapp.com",
-  databaseURL: "https://webfinal-8f09e.firebaseio.com",
-  projectId: "webfinal-8f09e",
-  storageBucket: "",
-  messagingSenderId: "355256297947"
-}
 
 @NgModule({
   imports: [
@@ -50,7 +40,6 @@ var firebaseConfig: {
     HttpClientModule,
     MaterialModule,
     FlexLayoutModule,
-    AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireStorageModule,
     AngularFireModule,
@@ -64,6 +53,7 @@ var firebaseConfig: {
     ),
 
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
     AngularFireDatabaseModule
   ],
   declarations: [
@@ -74,11 +64,9 @@ var firebaseConfig: {
     MessagesComponent,
     HeroSearchComponent,
     LoginComponent,
-    // AddHeroComponent,
-    // ToastNotificationComponent
+
   ],
   providers: [ HeroService, MessageService,
-    // {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}} 
   ],
   bootstrap: [ AppComponent ]
 })

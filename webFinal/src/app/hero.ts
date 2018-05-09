@@ -1,7 +1,10 @@
 export class Hero {
-    id: number;
-    img: string;
-    name: string;
-    subtitle: string;
-    content: string;
+  public constructor(
+    public id: number,
+    public img: string,
+    public name: string,
+    public subtitle: string,
+    public content: string){
+
+    }
   }

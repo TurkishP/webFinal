@@ -1,4 +1,4 @@
-<h3>Top Heroes</h3>
+<h3>Add A Hero</h3>
 
 <div class="container">
   <mat-form-field>
@@ -16,16 +16,24 @@
   <mat-form-field>
     <input matInput placeholder="content" #content>
   </mat-form-field>
+  <mat-form-field *ngFor="let count of heroCount | async">
+      <input matInput value="{{count}}" #count2>
+  </mat-form-field>
+<button mat-raised-button class="addHero" (click)="add(heroName.value,heroimg.value,subtitle.value,content.value,count2.value)">ADD HERO</button>
+
+
+
+      <!-- <div>Hero Count {{count}}</div> -->
 </div>
-<button mat-raised-button class="addHero" (click)="add(heroName.value,heroimg.value,subtitle.value,content.value )">ADD HERO</button>
 
 <div class="module-hero" fxLayout="row" fxLayout.xs="column" >
-  <div *ngFor="let hero of heroes" class="col" fxFlex="23" fxFlex.xs="100">
+  <div *ngFor="let hero of heroes | async" class="col" fxFlex="23" fxFlex.xs="100">
     <mat-card >
         <img mat-card-image src="{{hero.img}}">
         <!-- <div mat-card-avatar class="header-image"></div> -->
          <!-- <mat-card-title>{{hero.id}}</mat-card-title> erase later -->
         <mat-card-title>{{hero.name}}</mat-card-title>
+        <!-- <mat-card-content>{{ (heroes | async)?.length }} </mat-card-content> -->
         <mat-card-subtitle>{{hero.subtitle}}</mat-card-subtitle>
         <mat-card-content>{{hero.content}}</mat-card-content>
         <mat-card-actions>

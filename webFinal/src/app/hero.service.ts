@@ -8,79 +8,106 @@ import { Hero } from './hero';
 import { MessageService } from './message.service';
 import { MatSnackBar } from '@angular/material';
 
-// import { AuthService } from '@angular/core/auth.service';
 import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
-// import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
 import { AngularFireAuthModule } from 'angularfire2/auth';
 
-// interface Hero2{
-//   id: string;
-//   name: string;
-//   img: string;
-//   subtitle: string;
-//   content: string;
-// }
+
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
 
 @Injectable()
-export class HeroService {
+export class HeroService implements OnInit{
 
+  // const firestore = firebase.firestore();
+  // const settings = {/* your settings... */ timestampsInSnapshots: true};
+  // firestore.settings(settings);
+  public heroesRef = this.firebase.list('heroes');
+  heroesCollection: AngularFirestoreCollection<Hero>;
+  heroes: Observable<Hero[]>;
+  heroCount: Observable<any>;
+  // heroes : Hero[] =[];
   // private heroesCollection: AngularFirestoreCollection<Hero2>;
   // heroes: Observable<Hero2[]>;
  
   // heroes: AngularFireList<Hero>;
   private heroesUrl = 'api/heroes';  // URL to web api
-  private heroes: any;
+  // private heroes: any;
 
   constructor(
     public snackBar: MatSnackBar,
     private http: HttpClient,
     private messageService: MessageService,
-    private firebase: AngularFireDatabase
+    private firebase: AngularFireDatabase,
+    public afs: AngularFirestore
     ) {
+      this.heroes = firebase.list<Hero>('heroes').valueChanges();
+
+      this.heroCount = firebase.list<any>('heroCount').valueChanges();
+
+      //.subscribe(console.log);
       // private af: AngularFireDatabase
       // this.heroesDoc = afs.doc<Hero>('heroes');
       // this.heroes = this.heroesDoc.collection<Hero>('O2DWC8U9yA49C2X7M1g1').valueChanges();
-      this.heroes = this.firebase.list('heroes');
-      console.log(this.heroes);
+      // this.heroes = this.firebase.list('heroes');
     }
-  //  ngOnInit(){
-  //   this.heroesCollection = this.afs.collection('heroes');
-  //   this.heroes = this.heroesCollection.valueChanges();
-  //         console.log("hi");
-  //         console.log(this.heroes)
-  //  }
+
+  ngOnInit(){
+    // this.heroesCollection = this.afs.collection('heroes', ref =>{
+    //   return ref.orderBy('id')
+    // })
+    // this.heroes = this.heroesCollection.valueChanges()
+    // console.log("hi");
+    // this.afs.firestore.settings({ timestampsInSnapshots: true });
+    // this.heroes = this.afs
+    // .collection('heroes')
+    // .valueChanges();
+
+    // var x = this.firebase.list('heroes');
+    // x.snapshotChanges()
+    // .subscribe(item => {
+    //   item.forEach(element =>{
+    //     var y = element.payload.toJSON();
+    //     y["$key"] = element.key;
+    //     this.heroes.push(y as Hero);
+    //     console.log(y);
+    //   })
+    // })
+
+  }
 
   //firebase methods
-  getHeroesFromFirebase(){
-
+  getHeroCountFromFirebase(): Observable<number>{
+    return this.heroCount;
+  }
+  getHeroesFromFirebase(): Observable<Hero[]>{
+    // console.log(this.heroes);
     return this.heroes;
   }
 
-  addUserToFirebase(hero: Hero){
-    this.heroes.push(hero);
+  addHeroToFirebase(hero: Hero){
+     this.heroesRef.push(hero);
   }
 
-  // deleteUserFromFirebase(hero: Hero){
-  //   this.heroes.push(hero);
-  // }
+  deleteHeroFromFirebase(key: string): void{
+    this.heroesRef.remove(key);
+  }
 
 
 
   /** GET heroes from the server */
-  getHeroes (): Observable<Hero[]> {
-    return this.http.get<Hero[]>(this.heroesUrl)
-      .pipe(
-        tap(heroes => this.log(`fetched heroes`)),
-        catchError(this.handleError('getHeroes', []))
-      );
-  }
+  // getHeroes (): Observable<Hero[]> {
+  //   return this.http.get<Hero[]>(this.heroesUrl)
+  //     .pipe(
+  //       tap(heroes => this.log(`fetched heroes`)),
+  //       catchError(this.handleError('getHeroes', []))
+  //     );
+  // }
 
   /** GET hero by id. Return `undefined` when id not found */
   getHeroNo404<Data>(id: number): Observable<Hero> {
